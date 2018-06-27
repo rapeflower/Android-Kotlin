@@ -1,9 +1,11 @@
 package com.lily.kotlin
 
+import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
+import com.lily.kotlin.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -11,14 +13,14 @@ import kotlinx.android.synthetic.main.activity_main.*
  * @date 2018-06-21 16:41
  * @describe 学习Kotlin
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     //用val定义常量（相当于final）
     val TAG:String = MainActivity::class.java.simpleName
 
     //Kotlin提供了懒加载lazy机制：初始化和延迟加载
     private val myTextView:TextView by lazy {
-        findViewById(R.id.tvText) as TextView
+        findViewById<TextView>(R.id.tvText) as TextView
     }
 
     //lateinit
@@ -105,7 +107,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * 用is代替instance of
      */
-    fun th(obj:String) {
+    fun th(obj:Any) {
         if (obj is String) {}
     }
 
@@ -114,13 +116,13 @@ class MainActivity : AppCompatActivity() {
      */
     fun test() {
         //用in判断数字是否在某个区间
-        var x = 2
+        val x = 2
         //检查x数值是否在1到5区间
         if (x in 1..5) {}
 
         //用in判断集合中是否存在某个元素
-        var name = "李三"
-        var list = ArrayList<String>()
+        val name = "李三"
+        val list = ArrayList<String>()
         list.add("张三")
         list.add("莉丝")
         list.add("赵六")
@@ -132,6 +134,74 @@ class MainActivity : AppCompatActivity() {
         }
         for (item in list) {
             println(item)
+        }
+        //倒序遍历
+        for (i in list.size downTo 0) {}
+        //反转列表
+        for (i in (1..5).reversed()) {}
+        //foreach函数
+        list.forEach {  }
+    }
+
+    /**
+     * 用when取代了switch
+     * <p>
+     * Any表示未知类型
+     * <li>
+     * 代码中的参数类型Any，相当于Java中的Object，是Kotlin中所有类的基类
+     */
+    fun doWhen(obj:Any) {
+        when(obj) {
+            1 -> "is Int"
+            in 2..5 -> "between 2-5"
+            "str" -> initClient(obj.toString())
+            is String -> "is a string"
+            else -> "as default" //用else代替switch里面的default
+        }
+    }
+
+    /**
+     * 数据类
+     * <p>
+     *     数据模型里经常需要一些静态属性或方法，Kotlin可以在数据类里添加一个companion object（伴随对象），
+     *     让这个类的所有对象共享这个伴随对象（object在Kotlin中用来表示单例，Kotlin用Any来表示所有类的基类）
+     */
+    data class Client(var id:Int, var name:String, var birth:String, var address:String)
+    data class User(var id:Int, var name:String, var birth:String, var address:String) {
+        companion object {
+            private val group = "user-group-id"
+        }
+    }
+
+    /**
+     * 单例模式
+     * <p>
+     *     单例是很常见的一种设计模式，Kotlin干脆从语言级别提供单例，
+     *     关键字为object，如果你在扩展了Kotlin的IDE里输入singleton，
+     *     IDE也会自动帮你生成一个伴随对象，也就是一个单例
+     */
+    object One {
+        val group = "user-group-id"
+    }
+
+    fun Activity.showToast(msg:String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * 构造函数
+     */
+    class ClientInfo(id:Int, name:String, address:String)
+    class UserInfo constructor(id:Int, name:String, address:String) {//主构造函数
+        //二级构造函数必须代理主构造函数
+        constructor(id:Int, name:String, birth:String, address:String) : this(id, name, address) {}
+        constructor(id:Int, name:String, birth:String, address:String, mobile:String) : this(id, name, birth, address) {
+
+        }
+
+        //初始化模块init
+        init {
+
         }
     }
 }
