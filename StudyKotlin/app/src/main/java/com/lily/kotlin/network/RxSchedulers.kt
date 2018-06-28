@@ -20,7 +20,7 @@ object RxSchedulers {
     fun <T> compose(lifecycle: LifecycleTransformer<T>): ObservableTransformer<T, T> {
         return ObservableTransformer { observable ->
             observable.subscribeOn(Schedulers.io())
-                    .doOnSubscribe { }
+                    .doOnSubscribe { disposable -> }
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(lifecycle)
         }

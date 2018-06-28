@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import com.lily.kotlin.base.BaseActivity
+import com.lily.kotlin.network.RetrofitManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -36,6 +37,7 @@ class MainActivity : BaseActivity() {
         var list = ArrayList<String>()
 
         println("当前类名：" + TAG)
+        println(RetrofitManager.getRetrofit().baseUrl().toString())
     }
 
     /**
