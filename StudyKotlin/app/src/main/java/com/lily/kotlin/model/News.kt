@@ -1,8 +1,9 @@
 package com.lily.kotlin.model
 
 /**
- * Created by lilei on 2018/6/27.
+ * @Author rape flower
+ * @Date 2018-06-28 19:14
+ * @Describe
  */
 data class News(var id: String,
-                var img: String) {
-}
+                var img: String)
