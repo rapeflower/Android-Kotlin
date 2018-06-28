@@ -49,6 +49,9 @@ object RetrofitManager {
 
         /****** Retrofit 基本配置 ******/
         retrofit = buildRetrofit(okHttpClient, baseUrl)
+
+        // initialized apiService
+        apiService = getRetrofit().create(ApiService::class.java)
     }
 
     /**
@@ -72,9 +75,9 @@ object RetrofitManager {
      *
      * @return
      */
-    fun getRetrofit(): Retrofit {
+    private fun getRetrofit(): Retrofit {
         Inspect.asserts((retrofit != null), "Please call the RetrofitManager.init() when your application is started.")
-        return retrofit;
+        return retrofit
     }
 
     /**
@@ -93,9 +96,6 @@ object RetrofitManager {
      * @return
      */
     fun getApiService(): ApiService {
-        if (apiService == null) {
-            apiService = getRetrofit().create(ApiService::class.java)
-        }
         return apiService
     }
 }

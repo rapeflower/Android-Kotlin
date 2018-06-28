@@ -3,10 +3,18 @@ package com.lily.kotlin
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.lily.kotlin.base.BaseActivity
+import com.lily.kotlin.model.Logistics
+import com.lily.kotlin.network.BaseObserver
 import com.lily.kotlin.network.RetrofitManager
+import com.lily.kotlin.network.RxSchedulers
+import com.lily.kotlin.network.SimpleObserver
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -24,6 +32,10 @@ class MainActivity : BaseActivity() {
         findViewById<TextView>(R.id.tvText) as TextView
     }
 
+    private val btnKotlin: Button by lazy {
+        findViewById<Button>(R.id.bt_kotlin) as Button
+    }
+
     //lateinit
     lateinit var clientName:String
 
@@ -33,11 +45,14 @@ class MainActivity : BaseActivity() {
         tvText.text = "Kotlin demo study"
         myTextView.text = "Kotlin提供了懒加载lazy机制"
 
+        btnKotlin.setOnClickListener {
+            v: View? -> getKd_4()
+        }
+
         var intent = Intent(this, MainActivity::class.java)
         var list = ArrayList<String>()
 
         println("当前类名：" + TAG)
-        println(RetrofitManager.getRetrofit().baseUrl().toString())
     }
 
     /**
@@ -205,5 +220,21 @@ class MainActivity : BaseActivity() {
         init {
 
         }
+    }
+
+    /**
+     * 查询快递信息
+     */
+    fun getKd_4() {
+        val observable: Observable<Logistics> = RetrofitManager.getApiService().getLogistics("zhongtong", "474944203605")
+        observable.compose(RxSchedulers.compose(this.bindToLifecycle<Logistics>())).subscribe(object : SimpleObserver<Logistics>(this@MainActivity) {
+            override fun onSuccess(data: Logistics) {
+                Log.w(TAG, "Request by Kotlin code for result = " + data.toString())
+            }
+
+            override fun onFailure(msg: String) {
+
+            }
+        })
     }
 }
