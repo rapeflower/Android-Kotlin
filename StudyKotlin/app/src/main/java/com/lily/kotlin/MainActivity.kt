@@ -14,6 +14,7 @@ import com.lily.kotlin.network.BaseObserver
 import com.lily.kotlin.network.RetrofitManager
 import com.lily.kotlin.network.RxSchedulers
 import com.lily.kotlin.network.SimpleObserver
+import com.lily.kotlin.singleton.java.InnerSingleton
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -185,6 +186,11 @@ class MainActivity : BaseActivity() {
      */
     data class Client(var id:Int, var name:String, var birth:String, var address:String)
     data class User(var id:Int, var name:String, var birth:String, var address:String) {
+        /**
+         * 伴生对象（Companion Object）
+         * 每个类都可以实现一个伴生对象，它是该类的所有实例共有的对象。
+         * 它将类似于Java中的静态字段。
+         */
         companion object {
             private val group = "user-group-id"
         }
