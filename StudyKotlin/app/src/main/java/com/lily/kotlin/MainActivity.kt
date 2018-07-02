@@ -9,12 +9,10 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.lily.kotlin.base.BaseActivity
-import com.lily.kotlin.model.Logistics
-import com.lily.kotlin.network.BaseObserver
+import com.lily.kotlin.model.JLogistics
 import com.lily.kotlin.network.RetrofitManager
 import com.lily.kotlin.network.RxSchedulers
 import com.lily.kotlin.network.SimpleObserver
-import com.lily.kotlin.singleton.java.InnerSingleton
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -47,7 +45,7 @@ class MainActivity : BaseActivity() {
         myTextView.text = "Kotlin提供了懒加载lazy机制"
 
         btnKotlin.setOnClickListener {
-            v: View? -> getKd_4()
+            v: View? -> goLogistics()
         }
 
         var intent = Intent(this, MainActivity::class.java)
@@ -232,9 +230,9 @@ class MainActivity : BaseActivity() {
      * 查询快递信息
      */
     fun getKd_4() {
-        val observable: Observable<Logistics> = RetrofitManager.getApiService().getLogistics("zhongtong", "474944203605")
-        observable.compose(RxSchedulers.compose(this.bindToLifecycle<Logistics>())).subscribe(object : SimpleObserver<Logistics>(this@MainActivity) {
-            override fun onSuccess(data: Logistics) {
+        val observable: Observable<JLogistics> = RetrofitManager.getApiService().getLogistics("zhongtong", "474944203605")
+        observable.compose(RxSchedulers.compose(this.bindToLifecycle<JLogistics>())).subscribe(object : SimpleObserver<JLogistics>(this@MainActivity) {
+            override fun onSuccess(data: JLogistics) {
                 Log.w(TAG, "Request by Kotlin code for result = " + data.toString())
             }
 
@@ -242,5 +240,13 @@ class MainActivity : BaseActivity() {
 
             }
         })
+    }
+
+    /**
+     * 查看物流信息
+     */
+    fun goLogistics() {
+        var intent = Intent(this, LogisticsActivity::class.java)
+        startActivity(intent)
     }
 }

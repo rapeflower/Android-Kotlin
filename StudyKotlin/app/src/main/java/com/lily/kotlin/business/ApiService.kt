@@ -1,5 +1,6 @@
 package com.lily.kotlin.business
 
+import com.lily.kotlin.model.JLogistics
 import com.lily.kotlin.model.Logistics
 import io.reactivex.Observable
 import retrofit2.http.Field
@@ -21,5 +22,15 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("query")
-    fun getLogistics(@Field("type") type: String, @Field("postid") postid: String): Observable<Logistics>
+    fun getLogistics(@Field("type") type: String, @Field("postid") postid: String): Observable<JLogistics>
+
+    /**
+     * 查询物流信息
+     * @param type
+     * @param postid
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("query")
+    fun queryLogistics(@Field("type") type: String, @Field("postid") postid: String): Observable<Logistics>
 }

@@ -7,7 +7,7 @@ import java.util.List;
  * @Date 2018-06-28 18:06
  * @Describe
  */
-public class Logistics {
+public class JLogistics {
 
     private String message;
     private String nu;
@@ -122,7 +122,7 @@ public class Logistics {
 
     @Override
     public String toString() {
-        return "Logistics{" +
+        return "JLogistics{" +
                 "message='" + message + '\'' +
                 ", nu='" + nu + '\'' +
                 ", isCheck='" + ischeck + '\'' +
