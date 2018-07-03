@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.lily.kotlin.base.BaseActivity
+import com.lily.kotlin.business.ApiService
 import com.lily.kotlin.model.JLogistics
 import com.lily.kotlin.model.Repo
 import com.lily.kotlin.network.*
@@ -51,6 +52,7 @@ class MainActivity : BaseActivity() {
         var list = ArrayList<String>()
 
         println("当前类名：" + TAG)
+        getRepos()
     }
 
     /**
@@ -245,8 +247,9 @@ class MainActivity : BaseActivity() {
      * 获取GitHub Repo
      */
     fun getRepos() {
-        RetrofitManager.getApiService().getRepos("rapeflower").compose(
-                RxSchedulers.compose(this.bindToLifecycle<List<Repo>>()))
+        RetrofitManager.createRetrofit("https://api.github.com/")
+                .create(ApiService::class.java)
+                .getRepos("rapeflower").compose(RxSchedulers.compose(this.bindToLifecycle<List<Repo>>()))
                 .subscribe(object : SimpleObserver<List<Repo>>(this@MainActivity) {
                     override fun onSuccess(data: List<Repo>) {
                         Log.w(TAG, data[0].owner.login + "\n"

@@ -86,7 +86,7 @@ object RetrofitManager {
      * @return
      */
     fun createRetrofit(baseUrl: String): Retrofit {
-        Inspect.asserts((retrofit != null), "Please call the RetrofitManager.init() when your application is started.")
+        Inspect.asserts((okHttpClient != null), "Please call the RetrofitManager.init() when your application is started.")
         return buildRetrofit(okHttpClient, baseUrl)
     }
 
