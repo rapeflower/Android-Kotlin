@@ -3,6 +3,7 @@ package com.lily.kotlin
 import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
+import com.lily.kotlin.adapter.LogisticsAdapter
 import com.lily.kotlin.base.BaseActivity
 import com.lily.kotlin.model.Logistics
 import com.lily.kotlin.network.RetrofitManager
@@ -23,11 +24,25 @@ class LogisticsActivity : BaseActivity() {
         findViewById<ListView>(R.id.lv_logistics) as ListView
     }
 
+    lateinit var logisticsList: MutableList<Logistics.Details>
+    lateinit var adapter: LogisticsAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logistics)
 
+        initVariable()
         loadLogistics()
+    }
+
+    /**
+     * 初始化变量
+     */
+    private fun initVariable() {
+        logisticsList = ArrayList<Logistics.Details>()
+        adapter = LogisticsAdapter(this, logisticsList)
+
+        lvLogistics.adapter = adapter
     }
 
     /**
@@ -38,6 +53,9 @@ class LogisticsActivity : BaseActivity() {
         observable.compose(RxSchedulers.compose(this.bindToLifecycle<Logistics>())).subscribe(object : SimpleObserver<Logistics>(this@LogisticsActivity) {
             override fun onSuccess(data: Logistics) {
                 Log.w(TAG, "Request by Kotlin code for result = " + data.data[0].context)
+
+                logisticsList.addAll(data.data)
+                adapter.notifyDataSetChanged()
             }
 
             override fun onFailure(msg: String) {

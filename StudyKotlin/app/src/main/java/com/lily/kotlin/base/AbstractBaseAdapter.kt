@@ -11,7 +11,7 @@ import android.widget.BaseAdapter
  * @date 2018-07-02 11:06
  * @describe 通用数据适配器
  */
-abstract class AbstractBaseAdapter<T>(private val context: Context?, private val data: List<T>?) : BaseAdapter() {
+abstract class AbstractBaseAdapter<T>(private val context: Context?, private val data: MutableList<T>?) : BaseAdapter() {
 
     private var mInflater: LayoutInflater? = null
 

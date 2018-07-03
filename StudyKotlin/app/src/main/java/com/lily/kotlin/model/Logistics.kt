@@ -14,4 +14,9 @@ data class Logistics(
         var condition: String,
         var state: String,
         var data: List<Details>
-)
+) {
+    /**
+     * @Describe 物流信息详细model
+     */
+    inner class Details(var time: String, var ftime: String, var context: String, var location: String)
+}

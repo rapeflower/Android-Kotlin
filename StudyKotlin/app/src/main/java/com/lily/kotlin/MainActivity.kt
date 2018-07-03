@@ -10,9 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import com.lily.kotlin.base.BaseActivity
 import com.lily.kotlin.model.JLogistics
-import com.lily.kotlin.network.RetrofitManager
-import com.lily.kotlin.network.RxSchedulers
-import com.lily.kotlin.network.SimpleObserver
+import com.lily.kotlin.model.Repo
+import com.lily.kotlin.network.*
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -240,6 +239,26 @@ class MainActivity : BaseActivity() {
 
             }
         })
+    }
+
+    /**
+     * 获取GitHub Repo
+     */
+    fun getRepos() {
+        RetrofitManager.getApiService().getRepos("rapeflower").compose(
+                RxSchedulers.compose(this.bindToLifecycle<List<Repo>>()))
+                .subscribe(object : SimpleObserver<List<Repo>>(this@MainActivity) {
+                    override fun onSuccess(data: List<Repo>) {
+                        Log.w(TAG, data[0].owner.login + "\n"
+                                + data[0].name + "\n"
+                                + data[0].description + "\n"
+                                + data[0].html_url)
+                    }
+
+                    override fun onFailure(msg: String) {
+                        Log.w(TAG, "onFailure: " + msg)
+                    }
+                })
     }
 
     /**

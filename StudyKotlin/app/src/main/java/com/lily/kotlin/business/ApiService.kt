@@ -2,10 +2,9 @@ package com.lily.kotlin.business
 
 import com.lily.kotlin.model.JLogistics
 import com.lily.kotlin.model.Logistics
+import com.lily.kotlin.model.Repo
 import io.reactivex.Observable
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * @Author rape flower
@@ -33,4 +32,11 @@ interface ApiService {
     @FormUrlEncoded
     @POST("query")
     fun queryLogistics(@Field("type") type: String, @Field("postid") postid: String): Observable<Logistics>
+
+    /**
+     * 获取GitHub Repo
+     */
+    @GET("users/{user}/repos")
+    fun getRepos(@Path("user") user: String): Observable<List<Repo>>
+
 }
