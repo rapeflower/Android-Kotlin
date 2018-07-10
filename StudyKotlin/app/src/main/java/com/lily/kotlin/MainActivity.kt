@@ -2,6 +2,7 @@ package com.lily.kotlin
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.Toast
 import com.lily.kotlin.base.BaseActivity
 import com.lily.kotlin.business.ApiService
 import com.lily.kotlin.model.JLogistics
+import com.lily.kotlin.model.News
 import com.lily.kotlin.model.Repo
 import com.lily.kotlin.network.*
 import io.reactivex.Observable
@@ -226,6 +228,95 @@ class MainActivity : BaseActivity() {
 
         }
     }
+
+    /**
+     * 高阶函数
+     */
+    fun gj() {
+        val str = "abcde"
+        val sum = str.sumBy { it.toInt() }
+        println(sum)
+
+        ld(10, {num1: Int, num2: Int -> num1 + num2 })
+    }
+
+    /**
+     * 自定义高阶函数
+     */
+    fun ld(a: Int, b: (num1: Int, num2: Int) -> Int): Int {
+        return a + b.invoke(2, 6)
+    }
+
+    fun resultByOpt(num1: Int, num2: Int, result: (Int, Int) -> Int) : Int {
+        return result(num1, num2)
+    }
+
+    /**
+     * run 函数
+     */
+    fun testRun() {
+        val str = "mini"
+
+        run {
+            //和上面的变量str不会冲突
+            val str = "java"
+            println("str= $str")
+        }
+
+        println("str= $str")
+
+        // T.run()
+        val ks = "kotlin"
+        ks.run {
+            println("length = ${this.length}")
+            println("first = ${first()}")
+            println("last = ${last()}")
+        }
+        // with
+        with(ks) {
+            println("length = ${this.length}")
+            println("first = ${first()}")
+            println("last = ${last()}")
+        }
+
+        val arr = arrayOf(1, 3, 4, 5, 6, 7, 8, 9)
+
+        val mp = mapOf("key1" to "value1", "key2" to "value2", "key3" to "value3")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mp.forEach { key, value -> println("$key \t $value") }
+        }
+
+        //在使用Lambda表达式的时候，可以用下划线(_)表示未使用的参数，表示不处理这个参数。
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mp.forEach {
+                _, value -> println("$value")
+            }
+        }
+
+        val iop = fun Int.(other: Int) : Int = this + other
+        println(2.iop(3))
+
+        val news = News("101010", "/abc/src/img/test.png")
+        val (id, img) = news
+        println(news)
+        val m_news = news.copy(id = "15235793223036")
+        println(m_news)
+    }
+
+    /**
+     * 密封类
+     * sealed
+     */
+    sealed class TestSealed {
+        data class Person(val num1: Int, val num2: Int) : TestSealed()
+
+        object Add : TestSealed()
+
+        object Minus : TestSealed()
+    }
+
+    // 其子类可以定在密封类外部，但是必须在同一文件中 v1.1之前只能定义在密封类内部
+    //object ChildTestSealed : TestSealed()
 
     /**
      * 查询快递信息
