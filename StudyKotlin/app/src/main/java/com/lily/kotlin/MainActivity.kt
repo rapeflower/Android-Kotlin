@@ -272,6 +272,13 @@ class MainActivity : BaseActivity() {
             println("first = ${first()}")
             println("last = ${last()}")
         }
+        // let
+        ks?.let {
+            println(it.length)
+            println(it.first())
+            println(it.last())
+        }
+
         // with
         with(ks) {
             println("length = ${this.length}")
